@@ -16,15 +16,16 @@ export default function Home() {
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    setData(null);
     e.preventDefault();
     setIsLoading(true);
     fetch(`/api/recipes?query=${searchTerm}`)
       .then((res) => res.json())
-      .then((data) => setData(data));
-    setIsLoading(false);
+      .then((data) => {
+        setData(data);
+        setIsLoading(false);
+      });
   };
-
-  console.log(data);
 
   return (
     <section className="flex flex-col items-center justify-between">
@@ -44,14 +45,16 @@ export default function Home() {
           Search!
         </button>
       </form>
-      {!data ? null : (
+      {isLoading ? <div>Loading ...</div> : null}
+      {!data ? null : data.data.results.length === 0 ? (
+        <div>No result could be found</div>
+      ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 2xl:max-w-7xl">
           {data.data.results.map((item: any, i: number) => (
             <Card key={i} title={item.title} src={item.image} />
           ))}
         </div>
       )}
-      {isLoading ? <div>Loading ...</div> : null}
     </section>
   );
 }
