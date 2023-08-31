@@ -40,7 +40,7 @@ export default function Home() {
         onSubmit={handleSubmit}
       >
         <input
-          placeholder="Input a recipe name here"
+          placeholder="Input a recipe name here to search"
           value={searchTerm}
           onChange={handleChange}
           className="px-4 py-2 border rounded-lg border-lime-300 bg-black grow max-w-md"
