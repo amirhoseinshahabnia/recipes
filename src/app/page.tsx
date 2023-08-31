@@ -1,24 +1,23 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import Card from './components/card';
+import { useLocalStorage } from './hooks/useLocalStorage';
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<any>(null);
+  // TODO: ADD ERROR handling logic
   const [error, setError] = useState<any>(null);
-
-  if (error) return <div>Failed to load</div>;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  useEffect(() => {
-    // check if there is any previous search data saved on the browser
-    setData(JSON.parse(window.localStorage.getItem('recipes') as string));
-  }, []);
+  const { setLocalStorage } = useLocalStorage('recipes', setData);
+
+  if (error) return <div>Failed to load</div>;
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     setData(null);
@@ -27,9 +26,8 @@ export default function Home() {
     fetch(`/api/recipes?query=${searchTerm}`)
       .then((res) => res.json())
       .then((data) => {
-        // set local storage to persist previous search data in the browser
-        window.localStorage.setItem('recipes', JSON.stringify(data));
         setData(data);
+        setLocalStorage(data);
         setIsLoading(false);
       });
   };
