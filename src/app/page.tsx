@@ -1,6 +1,7 @@
 'use client';
 
 import { ChangeEvent, FormEvent, useState } from 'react';
+import classNames from 'classnames';
 import Card from './components/card';
 import { useLocalStorage } from './hooks/useLocalStorage';
 
@@ -44,7 +45,14 @@ export default function Home() {
           onChange={handleChange}
           className="px-4 py-2 border rounded-lg border-lime-300 bg-black grow max-w-md"
         />
-        <button className="py-2 px-4 rounded-lg bg-lime-300" type="submit">
+        <button
+          className={classNames(
+            'py-2 px-4 rounded-lg bg-lime-300 hover:opacity-80',
+            { 'btn-disabled': !searchTerm }
+          )}
+          type="submit"
+          disabled={!searchTerm}
+        >
           Search!
         </button>
       </form>

@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Header />
-        <main className="container mx-auto py-8 md:py-12 2xl:max-w-6xl">
+        <main className="container mx-auto py-8 md:py-12 2xl:max-w-7xl">
           {children}
         </main>
       </body>

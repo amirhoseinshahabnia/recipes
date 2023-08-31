@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Link from 'next/link';
+import Button from './button';
 
 interface Props {
   title: string;
@@ -14,13 +14,13 @@ const Card: React.FC<Props> = ({ title, src, id }) => {
         src={src}
         alt={title}
         className="rounded-t-2xl"
-        width={440}
+        width={640}
         height={300}
         style={{ objectFit: 'cover' }}
       />
-      <div className="p-6">
+      <div className="p-6 flex items-center justify-between gap-x-2">
         <p>{title}</p>
-        <Link href={`/recipes/${id}`}>See More</Link>
+        <Button link={`/recipes/${id}`} title="See More" type="secondary" />
       </div>
     </div>
   );
