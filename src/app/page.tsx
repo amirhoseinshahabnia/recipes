@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import Card from './components/card';
 
 export default function Home() {
@@ -15,6 +15,11 @@ export default function Home() {
     setSearchTerm(e.target.value);
   };
 
+  useEffect(() => {
+    // check if there is any previous search data saved on the browser
+    setData(JSON.parse(window.localStorage.getItem('recipes') as string));
+  }, []);
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     setData(null);
     e.preventDefault();
@@ -22,6 +27,8 @@ export default function Home() {
     fetch(`/api/recipes?query=${searchTerm}`)
       .then((res) => res.json())
       .then((data) => {
+        // set local storage to persist previous search data in the browser
+        window.localStorage.setItem('recipes', JSON.stringify(data));
         setData(data);
         setIsLoading(false);
       });
@@ -29,8 +36,6 @@ export default function Home() {
 
   return (
     <section className="flex flex-col items-center justify-between">
-      <h1 className="text-4xl mb-4">Recipe App</h1>
-      <p className="mb-6">Search for a recipe here</p>
       <form
         className="mb-8 max-w-lg flex gap-x-2 justify-center px-4 md:px-0 w-full max-w-lg"
         onSubmit={handleSubmit}
@@ -51,7 +56,7 @@ export default function Home() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 2xl:max-w-7xl">
           {data.data.results.map((item: any, i: number) => (
-            <Card key={i} title={item.title} src={item.image} />
+            <Card key={i} title={item.title} src={item.image} id={item.id} />
           ))}
         </div>
       )}
