@@ -18,7 +18,7 @@ const Card: React.FC<Props> = ({ title, src, id }) => {
         height={300}
         style={{ objectFit: 'cover' }}
       />
-      <div className="p-6 flex items-center justify-between gap-x-2">
+      <div className="p-6 flex items-center justify-between gap-x-6">
         <p>{title}</p>
         <Button link={`/recipes/${id}`} title="See More" type="secondary" />
       </div>
