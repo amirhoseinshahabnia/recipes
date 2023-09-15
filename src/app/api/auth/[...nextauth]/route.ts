@@ -12,18 +12,21 @@ const handler = NextAuth({
     async signIn({ user, account }) {
       if (account?.provider === 'google') {
         try {
-          const res = await fetch('http://localhost:3000/api/user', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              name: user.name,
-              email: user.email,
-              profileImgUrl: user.image,
-              googleId: user.id,
-            }),
-          });
+          const res = await fetch(
+            'https://recipes-eosin-three.vercel.app/api/user',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                name: user.name,
+                email: user.email,
+                profileImgUrl: user.image,
+                googleId: user.id,
+              }),
+            }
+          );
           if (res.ok) return true;
         } catch (err) {
           console.log(err);
