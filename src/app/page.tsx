@@ -24,8 +24,6 @@ export default function Home() {
 
   if (error) return <div>Failed to load</div>;
 
-  console.log(accountData?.user);
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     setData(null);
     e.preventDefault();
