@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account }) {
       if (account?.provider === 'google') {
         try {
-          const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user`, {
+          const res = await fetch(process.env.NEXTAUTH_URL + '/api/user', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
