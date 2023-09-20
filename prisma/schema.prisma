@@ -11,7 +11,7 @@ datasource db {
   url = env("DATABASE_URL")
   // prod db
   // url = env("POSTGRES_URL") // uses connection pooling
-  // directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 model User {
