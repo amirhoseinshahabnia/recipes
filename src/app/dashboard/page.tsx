@@ -17,7 +17,7 @@ export default async function Dashboard() {
     const user = await prisma.user.findFirst({
       where: {
         // @ts-ignore
-        googleId: session?.user?.id as string,
+        googleId: 'amirhosein.shahabnia@gmail.com',
       },
     });
     return <section>Hi There {user ? user.name : null}</section>;
