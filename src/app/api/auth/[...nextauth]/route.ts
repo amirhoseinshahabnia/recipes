@@ -13,22 +13,20 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account }) {
       if (account?.provider === 'google') {
         try {
-          const res = await fetch(
-            'https://recipes-eosin-three.vercel.app/api/user',
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                name: user.name,
-                email: user.email,
-                profileImgUrl: user.image,
-                googleId: user.id,
-              }),
-            }
-          );
-          console.log(process.env.NEXTAUTH_URL);
+          const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: process.env.NEXTAUTH_SECRET as string,
+            },
+            body: JSON.stringify({
+              name: user.name,
+              email: user.email,
+              profileImgUrl: user.image,
+              googleId: user.id,
+            }),
+          });
+          // console.log(process.env.NEXTAUTH_URL);
           if (res.ok) return true;
         } catch (err) {
           console.log(err);
@@ -36,6 +34,24 @@ export const authOptions: NextAuthOptions = {
         }
       }
       return false;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        return {
+          ...token,
+          id: user.id,
+        };
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+        },
+      };
     },
   },
 };
