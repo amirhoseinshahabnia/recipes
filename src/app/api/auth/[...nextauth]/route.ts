@@ -9,6 +9,9 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
+  pages: {
+    signIn: '/',
+  },
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === 'google') {
@@ -26,7 +29,7 @@ export const authOptions: NextAuthOptions = {
               googleId: user.id,
             }),
           });
-          // console.log(process.env.NEXTAUTH_URL);
+
           if (res.ok) return true;
         } catch (err) {
           console.log(err);

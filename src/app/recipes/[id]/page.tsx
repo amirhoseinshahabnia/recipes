@@ -4,11 +4,14 @@ import Image from 'next/image';
 import { useFetch } from '@/app/helpers/useFetch';
 
 export default function Page({ params }: { params: { id: string } }) {
-  const { data, error } = useFetch(`/api/single-recipe?id=${params.id}`);
+  const { data, error, isLoading } = useFetch(
+    `/api/single-recipe?id=${params.id}`
+  );
 
-  console.log(data);
+  console.log(isLoading);
 
-  if (!data) return <div>Loading</div>;
+  if (isLoading) return <div>Loading</div>;
+  if (!data) return <div>No recipe could be found</div>;
   if (error) return <div>Something went wrong, please try again</div>;
 
   return (

@@ -6,7 +6,6 @@ export async function POST(req: NextRequest) {
   if (req.headers.get('authorization') !== process.env.NEXTAUTH_SECRET) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-
   const { name, email, profileImgUrl, googleId } = await req.json();
 
   try {
@@ -28,9 +27,6 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (err) {
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: err }, { status: 500 });
   }
 }
