@@ -37,6 +37,8 @@ export default function Home() {
       });
   };
 
+  console.log(data);
+
   if (status === 'loading') return <div>Loading</div>;
 
   return (
