@@ -1,3 +1,4 @@
+import { prisma } from '@/app/lib/prisma';
 import { NextAuthOptions } from 'next-auth';
 import NextAuth from 'next-auth/next';
 import GoogleProvider from 'next-auth/providers/google';
@@ -13,30 +14,25 @@ export const authOptions: NextAuthOptions = {
     signIn: '/',
   },
   callbacks: {
-    async signIn({ user, account }) {
-      if (account?.provider === 'google') {
-        try {
-          const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: process.env.NEXTAUTH_SECRET as string,
-            },
-            body: JSON.stringify({
-              name: user.name,
-              email: user.email,
-              profileImgUrl: user.image,
-              googleId: user.id,
-            }),
-          });
-
-          if (res.ok) return true;
-        } catch (err) {
-          console.log(err);
-          return false;
-        }
+    async signIn({ user }) {
+      if (!user.email) {
+        throw new Error('No Email');
       }
-      return false;
+
+      await prisma.user.upsert({
+        where: {
+          email: user.email,
+        },
+        update: {},
+        create: {
+          name: user.name as string,
+          email: user.email,
+          profileImgUrl: user.image as string,
+          googleId: user.id,
+        },
+      });
+
+      return true;
     },
     async jwt({ token, user }) {
       if (user) {
