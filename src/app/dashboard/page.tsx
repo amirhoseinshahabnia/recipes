@@ -12,7 +12,11 @@ export default async function Dashboard() {
         googleId: session?.user?.id as string,
       },
     });
-    return <section>Hi There {user ? user.name : null}</section>;
+    return (
+      <section className="px-4 md:px-0">
+        Hi There {user ? user.name : null}
+      </section>
+    );
   } catch (err) {
     console.log(err);
     return (
