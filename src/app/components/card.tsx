@@ -1,12 +1,13 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import Image from 'next/image';
 import Button from './button';
+import { revalidateTag } from 'next/cache';
 
 interface Props {
   title: string;
   src: string;
   id: string;
-  setToastVisible: Dispatch<
+  setToastVisible?: Dispatch<
     SetStateAction<{
       type: string;
       visible: boolean;
@@ -31,15 +32,16 @@ const Card: React.FC<Props> = ({ title, src, id, setToastVisible }) => {
         }),
       });
       await res.json();
+      revalidateTag('recipes');
       setLiked(true);
-      setToastVisible({
+      setToastVisible?.({
         type: 'success',
         visible: true,
         message: 'Recipe successfully liked!',
       });
     } catch (error) {
       console.log(error);
-      setToastVisible({
+      setToastVisible?.({
         type: 'error',
         visible: true,
         message: 'Something went wrong',
