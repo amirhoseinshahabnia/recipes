@@ -27,7 +27,7 @@ export default function Toast({ toastVisible, setToastVisible }: ToastProps) {
   return (
     <div
       id="toast-default"
-      className="fixed flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 right-4 bottom-4"
+      className="fixed flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 right-4 bottom-4 z-50"
       role="alert"
     >
       <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-blue-500 bg-blue-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
@@ -76,9 +76,9 @@ export default function Toast({ toastVisible, setToastVisible }: ToastProps) {
         >
           <path
             stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
             d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
           />
         </svg>

@@ -32,7 +32,6 @@ const Card: React.FC<Props> = ({ title, src, id, setToastVisible }) => {
         }),
       });
       await res.json();
-      revalidateTag('recipes');
       setLiked(true);
       setToastVisible?.({
         type: 'success',
