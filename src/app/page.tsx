@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import Card from './components/card';
 import AccountInfo from './components/accountInfo';
 import Toast from './components/toast';
+import stringHash from 'string-hash';
 import { useLocalStorage } from './hooks/useLocalStorage';
 
 export default function Home() {
@@ -24,9 +25,14 @@ export default function Home() {
     setSearchTerm(e.target.value);
   };
 
-  const { setLocalStorage } = useLocalStorage('recipes', setData);
-
   const { status, data: accountData } = useSession();
+
+  const { setLocalStorage } = useLocalStorage(
+    'recipes',
+    setData,
+    // @ts-ignore
+    accountData?.user?.id
+  );
 
   if (error) return <div>Failed to load</div>;
 
@@ -37,13 +43,12 @@ export default function Home() {
     fetch(`/api/recipes?query=${searchTerm}`)
       .then((res) => res.json())
       .then((data) => {
-        setData(data);
-        setLocalStorage(data);
+        setData(data.data);
+        // @ts-ignore
+        setLocalStorage({ id: accountData?.user.id, data: data.data });
         setIsLoading(false);
       });
   };
-
-  console.log(data);
 
   if (status === 'loading') return <div>Loading</div>;
 
@@ -80,11 +85,11 @@ export default function Home() {
               </button>
             </form>
             {isLoading ? <div>Loading ...</div> : null}
-            {!data ? null : data.data.results.length === 0 ? (
+            {!data ? null : data.results.length === 0 ? (
               <div>No result could be found</div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 2xl:max-w-7xl">
-                {data.data.results.map((item: any, i: number) => (
+                {data.results.map((item: any, i: number) => (
                   <Card
                     key={i}
                     title={item.title}
